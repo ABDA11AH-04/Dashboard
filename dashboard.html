@@ -115,7 +115,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap; /* للسماح للعناصر بالنزول لسطر جديد على شاشات الموبايل */
-            gap: 10px; /* تقليل المسافة لتناسب شاشات الموبايل */
+            gap: 10px; 
             margin-top: 15px;
             font-size: 0.9em;
         }
@@ -217,13 +217,13 @@
     <script>
         const ctx = document.getElementById('vocsChart');
 
-        // البيانات التي تحاكي قراءات المستشعر على مدار 72 ساعة (ارتفاع تدريجي وواضح)
+        // البيانات التي تحاكي قراءات المستشعر على مدار 72 ساعة (ارتفاع تدريجي يصل إلى 30 PPM)
         const data = {
             labels: ['Day 1 (0h)', '6h', '12h', '18h', 'Day 2 (24h)', '30h', '36h', '42h', 'Day 3 (48h)', '54h', '60h', '72h'],
             datasets: [{
                 label: 'VOCs Concentration (PPM)',
-                // بيانات الارتفاع التدريجي: من 10 PPM إلى 34.5 PPM 
-                data: [10, 11.5, 13, 14.5, 16, 18, 20, 22.5, 25, 28, 31, 34.5], 
+                // بيانات الارتفاع التدريجي: من 10 PPM إلى 30 PPM 
+                data: [10, 11.5, 13, 15, 17, 19, 21, 23, 25, 27, 29, 30], 
                 borderColor: '#28a745', 
                 backgroundColor: 'rgba(40, 167, 69, 0.2)', 
                 borderWidth: 3, 

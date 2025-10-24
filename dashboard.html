@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beefy Quality Control Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+            padding-bottom: 20px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Header Styling */
+        .header {
+            background-color: #A02C2C; 
+            color: #fff;
+            padding: 15px 20px;
+            font-size: 1.6em;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Dashboard Specific Styling */
+        .dashboard-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Input/Scan Interface Styling */
+        .input-interface {
+            padding: 20px 20px 5px 20px; 
+            border-bottom: 1px solid #ddd; 
+            background-color: #f0f0f0;
+        }
+        
+        /* Main Status Indicator (Crucial for quick check) */
+        .status-indicator {
+            padding: 18px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .status-good {
+            background-color: #28a745; 
+        }
+        
+        .metric-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-card h3 {
+            color: #A02C2C;
+            font-size: 1.2em;
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        /* Data Grid for Engineer Details */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .grid-item span {
+            display: block;
+            font-weight: 700;
+            color: #A02C2C;
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+        
+        /* Legend Styling */
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="header">
+            Quality Control: Live Package Status 🛠️
+        </div>
+        
+        <div class="input-interface">
+            <h3>Enter or Scan Package ID:</h3>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" placeholder="e.g., 04-BEEFY-8812" value="04-BEEFY-8812" style="flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 1em;">
+                <button style="padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                    LOAD DATA
+                </button>
+            </div>
+            <p style="font-size: 0.8em; color: #6c757d; margin-top: 8px;">
+                (In real app, this fetches live sensor data for this ID)
+            </p>
+        </div>
+        
+        <div class="dashboard-container">
+            
+            <div class="data-grid">
+                <div class="grid-item">Package ID: <span>04-BEEFY-8812</span></div>
+                <div class="grid-item">Batch Code: <span>#QC20251024</span></div>
+                <div class="grid-item">Pack Date: <span>24 Oct 2025</span></div>
+            </div>
+            
+            <div class="status-indicator status-good">
+                CURRENT STATUS: **FRESH** 🟢
+                <div style="font-size: 0.5em; font-weight: 400; margin-top: 5px;">Below Spoilage Thresholds</div>
+            </div>
+
+            <div class="metric-card">
+                <h3>Ammonia Gas Concentration (NH₃)</h3>
+                <span class="metric-value">12.5 PPM</span>
+                <span class="metric-label">Threshold Limit (Red Alert): 50 PPM</span>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <div class="metric-card" style="flex: 1;">
+                    <h3>Temperature</h3>
+                    <span class="metric-value">4.2°C</span>
+                    <span class="metric-label">Ideal Range: 0°C to 5°C</span>
+                </div>
+                <div class="metric-card" style="flex: 1;">
+                    <h3>Humidity</h3>
+                    <span class="metric-value">78%</span>
+                    <span class="metric-label">High humidity accelerates growth</span>
+                </div>
+            </div>
+            
+            <div class="metric-card">
+                <h3>VOCs Trend (Last 72 Hours)</h3>
+                <div style="padding: 10px;">
+                    <canvas id="vocsChart"></canvas>
+                </div>
+                
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #dc3545;"></div>
+                        Red Line: **Spoilage Limit (50 PPM)**
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #ffc107;"></div>
+                        Yellow Line: **Warning Zone (40 PPM)**
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #28a745;"></div>
+                        Green Line: **Current Trend**
+                    </div>
+                </div>
+
+                <span class="metric-label" style="text-align: center; display: block; margin-top: 15px;">
+                    The chart shows a slow, steady rise below the red threshold, indicating consistent cold chain stability.
+                </span>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('vocsChart');
+
+        // البيانات التي تحاكي قراءات المستشعر على مدار 72 ساعة
+        const data = {
+            labels: ['Day 1 (0h)', '6h', '12h', '18h', 'Day 2 (24h)', '30h', '36h', '42h', 'Day 3 (48h)', '54h', '60h', '72h'],
+            datasets: [{
+                label: 'VOCs Concentration (PPM)',
+                data: [10, 10.5, 11, 11.2, 11.5, 12, 12.5, 12.8, 13, 13.5, 14.2, 15], 
+                borderColor: '#28a745', 
+                backgroundColor: 'rgba(40, 167, 69, 0.1)', 
+                borderWidth: 3,
+                tension: 0.3, 
+                fill: true
+            }]
+        };
+
+        // خيارات الرسم البياني
+        const options = {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+                y: {
+                    min: 0,
+                    max: 70, 
+                    title: {
+                        display: true,
+                        text: 'PPM'
+                    },
+                    suggestedMax: 70,
+                    suggestedMin: 0,
+                    ticks: {
+                        stepSize: 10,
+                    },
+                    grid: {
+                        borderColor: 'black',
+                        color: (context) => {
+                            if (context.tick.value === 50) return '#dc3545'; // أحمر (الخطر)
+                            if (context.tick.value === 40) return '#ffc107'; // أصفر (التحذير)
+                            return 'rgba(0, 0, 0, 0.1)'; 
+                        },
+                        lineWidth: (context) => {
+                            if (context.tick.value === 50) return 2;
+                            if (context.tick.value === 40) return 1.5;
+                            return 1;
+                        },
+                        drawTicks: false
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time (Hours)'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // تم تعطيل Legend الافتراضي لأننا صنعنا واحدًا يدويًا في HTML
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            }
+        };
+
+        // إنشاء الرسم البياني
+        new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: options
+        });
+    </script>
+</body>
+</html>
